@@ -27,6 +27,7 @@ body
 
 <li><strong>High Concept:</strong>
 Speed Memory is  game where you try to match all cards in time.
+<p>Note: This is a polish of digital assignment #8.\nGame timing mechanics improved. Additional animation and sounds added. Bubble size changed and red bubbles added to lower game difficulty. Thirty redundant methods removed. Additional helper methods added.</p>
 </li>
 
 <li><strong>Player Experience Goals:</strong>
@@ -38,15 +39,15 @@ This game is in the matching and memorization genres.
 </li>
 
 <li><strong>Game play:</strong>
-Players move the avatar with the arrow keys. The spacebar key will flip a card over. If two cards are the same when flipped they are removed from play. Bubbles will slow down the player for 5 seconds if they touch the avatar.
+Players move the avatar with the arrow keys. The spacebar key will flip a card over. If two cards are the same when flipped they are removed from play. Clear bubbles will slow down the player for 5 seconds if they touch the avatar. Red bubbles will speed the player up for 5 seconds. Red bubbles protect the player from clear bubbles for a limited time.
 </li>
 
 <li><strong>Prototype goal:</strong>
-The prototype goal is to show the matching and memorization mechanics and see how players react to time constraints. The prototype gives the opportunity to observe player behavior by changing the amount of time available. Focuses on the memorization, puzzle, and matching themes from last week's class.
+The prototype goal is to show the matching and memorization mechanics and see how players react to time constraints. The prototype gives the opportunity to observe player behavior by changing the amount of time available. The game also focuses on the memorization, puzzle, and matching themes from last week's class.
 </li>
 
 <li><strong>Features:</strong>
-The game gives players feedback with sounds and the removal of matched cards. Players do not click on the cards directly but instead have to move an avatar charcter to each card.
+The game gives players feedback with sounds and the removal of matched cards. Players do not click on the cards directly but instead have to move an avatar character to each card.
 </li>
 
 <li><strong>Setting/Premise:</strong>
@@ -66,11 +67,11 @@ You have 169 seconds to beat the game. Play time will be no longer than this tim
 </li>
 
 <li><strong>Strategies:</strong>
-The standard memory game strategies apply here. In addition, since all the bubbles share the same global timer it is beneficial to pop as many as you can while you are in the slowdown state. This is because it will not add to the 5 second slowdown timer.
+The standard memory game strategies apply here. In addition, since all the bubbles share the same global timer it is beneficial to pop as many clear bubbles as you can while you are in the slowdown or speedup state. This is because it will not add to the 5 second global timer. Bubbles should try to be avoided until they are needed for a speed boost or they can be destroyed by a red bubble shield.
 </li>
 
 <li><strong>Prototype Assets:</strong>
-Card images taken from Google Images icon search. All other image assets made by internal design team. Audio files taken from public domain sources.
+Card images taken from Google Images icon search. Explosion sprite sheet taken from game development public domain resources. Shield image taken from Google image search. All other image assets made by internal design team. Audio files taken from public domain sources.
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
