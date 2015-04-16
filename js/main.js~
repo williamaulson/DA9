@@ -1,7 +1,7 @@
 window.onload = function() {
     // William Aulsoln CS 325
-    // Digital Assignment #8
-    // Speed Memory
+    // Digital Assignment #9
+    // Speed Memory Polish Assignment
     
     "use strict";
     
@@ -11,6 +11,7 @@ window.onload = function() {
     {
     	    game.load.image('back', 'assets/back.png');
     	    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    	    game.load.spritesheet('explode', 'assets/explode.png', 64, 64);
     	    game.load.image('floor', 'assets/floor.png');
     	    game.load.image('wall', 'assets/wall.png');
     	    game.load.image('card', 'assets/card.png');
@@ -114,6 +115,8 @@ window.onload = function() {
     var index;
     var redGroup;
     var shield;
+    var explode;
+    var explodeTwo;
         
     function create() //create initial assets
     {
@@ -293,6 +296,11 @@ window.onload = function() {
     	    
     	    redGroup = game.add.group();
     	    game.physics.arcade.enable(redGroup);
+    	    
+    	    explode = game.add.sprite(-500, -500, 'explode');
+    	    explode.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 10, true);
+    	    explodeTwo = game.add.sprite(-500, -500, 'explode');
+    	    explodeTwo.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 10, true);
     	        	    
     	    avatar = game.add.sprite(950, 480, 'dude');
     	    game.physics.arcade.enable(avatar);
@@ -356,8 +364,8 @@ window.onload = function() {
     	    
     	    if (shield != null)
     	    {
-    	    	    shield.x = avatar.x - 20;
-    	    	    shield.y = avatar.y - 7;
+    	    	    shield.x = avatar.x + 16;
+    	    	    shield.y = avatar.y + 28;
     	    }
     	    
     	    game.physics.arcade.collide(avatar, wallGroup, null, null, this);
@@ -471,9 +479,9 @@ window.onload = function() {
     function killRedBubble(avatar, bubble) //destroy a red bubble
     {
     	    pop.play('', 0, 1, false);
-    	    shield = game.add.sprite(avatar.x - 20, avatar.y - 7, 'shield');
-    	    
-    	    game.add.tween(shield).to( { angle: 720 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, false);
+    	    shield = game.add.sprite(avatar.x + 16, avatar.y + 28, 'shield');
+    	    shield.anchor.setTo(0.5, 0.5);
+    	    game.add.tween(shield).to( { angle: 360 }, 500, Phaser.Easing.Linear.None, true, 0, -1, false);
     	    bubble.destroy();
     	    if (timerOff)
     	    {

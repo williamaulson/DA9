@@ -1,7 +1,7 @@
 window.onload = function() {
     // William Aulsoln CS 325
-    // Digital Assignment #8
-    // Speed Memory
+    // Digital Assignment #9
+    // Speed Memory Polish Assignment
     
     "use strict";
     
@@ -11,6 +11,7 @@ window.onload = function() {
     {
     	    game.load.image('back', 'assets/back.png');
     	    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    	    game.load.spritesheet('explode', 'assets/explode.png', 64, 64);
     	    game.load.image('floor', 'assets/floor.png');
     	    game.load.image('wall', 'assets/wall.png');
     	    game.load.image('card', 'assets/card.png');
@@ -114,6 +115,11 @@ window.onload = function() {
     var index;
     var redGroup;
     var shield;
+    var explode;
+    var explodeTwo;
+    var playExplode = 0;
+    var shieldOff = 1;
+    var speedDown = 0;
         
     function create() //create initial assets
     {
@@ -293,6 +299,11 @@ window.onload = function() {
     	    
     	    redGroup = game.add.group();
     	    game.physics.arcade.enable(redGroup);
+    	    
+    	    explode = game.add.sprite(-500, -500, 'explode');
+    	    explode.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 10, true);
+    	    explodeTwo = game.add.sprite(-500, -500, 'explode');
+    	    explodeTwo.animations.add('explode', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 10, true);
     	        	    
     	    avatar = game.add.sprite(950, 480, 'dude');
     	    game.physics.arcade.enable(avatar);
@@ -306,7 +317,7 @@ window.onload = function() {
     	    introBack = game.add.sprite(0, 0, 'back');
     	    introTitleText = game.add.text(500, 100, 'Speed Memory', titleStyle);
     	    introTitleText.anchor.set(0.5);
-    	    introText = game.add.text(500, 250, 'Use the arrow keys to move.\nFlip the Cards with Spacebar.\nAvoid the bubbles.', textStyle);
+    	    introText = game.add.text(500, 250, '\n\n\nClick the mouse on the game area to start.\n\nUse the arrow keys to move.\nFlip the cards with spacebar.\nRed bubbles make you faster.\nClear bubbles make you slower.\nRed bubbles protect against clear bubbles.', textStyle);
     	    introText.anchor.set(0.5);
     	    
     	    music = game.add.audio('reed');
@@ -321,7 +332,6 @@ window.onload = function() {
     {
     	    if (game.scale.isFullScreen)
     	    {
-    	    	    game.paused = true;
     	    	    game.scale.stopFullScreen();
     	    }
     	    else
@@ -465,21 +475,30 @@ window.onload = function() {
     	    	    avatarSpeed = 0.5;
     	    	    game.time.events.add(Phaser.Timer.SECOND * 5.0, resetTimer, null);
     	    	    timerOff = 0;
+    	    	    speedDown = 1;
     	    }
     }
     
     function killRedBubble(avatar, bubble) //destroy a red bubble
     {
     	    pop.play('', 0, 1, false);
-    	    shield = game.add.sprite(avatar.x + 16, avatar.y + 28, 'shield');
-    	    shield.anchor.setTo(0.5, 0.5);
-    	    game.add.tween(shield).to( { angle: 360 }, 500, Phaser.Easing.Linear.None, true, 0, -1, false);
+    	    if (shieldOff)
+    	    {
+    	    	   shield = game.add.sprite(avatar.x + 16, avatar.y + 28, 'shield');
+    	    	   shield.anchor.setTo(0.5, 0.5);
+    	    	   game.add.tween(shield).to( { angle: 360 }, 500, Phaser.Easing.Linear.None, true, 0, -1, false);
+    	    	   shieldOff = 0;
+    	    }
     	    bubble.destroy();
     	    if (timerOff)
     	    {
     	    	    avatarSpeed = 1.5;
     	    	    game.time.events.add(Phaser.Timer.SECOND * 5.0, resetTimer, null);
     	    	    timerOff = 0;
+    	    }
+    	    else if (speedDown)
+    	    {
+    	    	   avatarSpeed = 1.5; 
     	    }
     }
     
@@ -488,14 +507,16 @@ window.onload = function() {
     	    if (shield != null)
     	    {
     	    	    shield.destroy();
+    	    	    shieldOff = 1;
     	    }
     	    avatarSpeed = 1.0;
     	    timerOff = 1;
+    	    speedDown = 0;
     }
     
     function makeBubble() //create a bubble object
     {
-    	    if ((game.rnd.integerInRange(0, 9)) < 10)
+    	    if ((game.rnd.integerInRange(0, 9)) < 3)
     	    {
     	    	    emptyBubble = redGroup.create(getBubbleX(), getBubbleY(), 'redbub');
     	    }
@@ -546,6 +567,25 @@ window.onload = function() {
     {
     	    firstCard.destroy();
     	    secondCard.destroy();
+    	    if (playExplode)
+    	    {
+    	    	    explode.x = firstCard.x;
+    	    	    explode.y = firstCard.y;
+    	    	    explodeTwo.x = secondCard.x;
+    	    	    explodeTwo.y = secondCard.y;
+    	    	    explode.animations.play('explode');
+    	    	    explodeTwo.animations.play('explode');
+    	    	    game.time.events.add(Phaser.Timer.SECOND * 1.0, resetExplode, null);
+    	    }
+    	    playExplode = 0;
+    }
+    
+    function resetExplode()
+    {
+    	    explode.x = -500;
+    	    explode.y = -500;
+    	    explodeTwo.x = -500;
+    	    explodeTwo.y = -500;  
     }
     
     function checkWin() //end game state
@@ -618,6 +658,7 @@ window.onload = function() {
     	    	   	   	   secondBackCard = card;
     	    	    		   if (cardList[index] === firstCardCheck)
     	    	    		   {
+    	    	    		   	   playExplode = 1;
     	    	    		   	   matchesRemaining = matchesRemaining - 1;
     	    	    		    	   game.time.events.add(Phaser.Timer.SECOND * 1.0, killCards, null);
     	    	    		    	   firstBackCard.x = -500;
