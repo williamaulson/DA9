@@ -356,8 +356,8 @@ window.onload = function() {
     	    
     	    if (shield != null)
     	    {
-    	    	    shield.x = avatar.x + 16;
-    	    	    shield.y = avatar.y + 28;
+    	    	    shield.x = avatar.x - 20;
+    	    	    shield.y = avatar.y - 7;
     	    }
     	    
     	    game.physics.arcade.collide(avatar, wallGroup, null, null, this);
@@ -471,9 +471,9 @@ window.onload = function() {
     function killRedBubble(avatar, bubble) //destroy a red bubble
     {
     	    pop.play('', 0, 1, false);
-    	    shield = game.add.sprite(avatar.x + 16, avatar.y + 28, 'shield');
-    	    shield.anchor.setTo(0.5, 0.5);
-    	    game.add.tween(shield).to( { angle: 360 }, 500, Phaser.Easing.Linear.None, true, 0, -1, false);
+    	    shield = game.add.sprite(avatar.x - 20, avatar.y - 7, 'shield');
+    	    
+    	    game.add.tween(shield).to( { angle: 720 }, 1000, Phaser.Easing.Linear.None, true, 0, -1, false);
     	    bubble.destroy();
     	    if (timerOff)
     	    {
